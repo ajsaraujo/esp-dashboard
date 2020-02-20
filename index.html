@@ -1,14 +1,25 @@
 <!DOCTYPE html> 
 <html>
 	<head>
+		<title>D1 Wemos Mini Dashboard</title>
+		<style>
+			html {
+				padding-top: 2%;
+				text-align: center; 
+			}
+			
+			button {
+				border-radius: 25%;
+			}
+		</style>
 	</head>
-	<script>	
+	<script>
 		async function toggleLed(value) {
 			let url = `led=${value}`; 
 			let response = await fetch(url);
-			console.log(`Led State = ${value}`); 
+			console.log(await response.message); 
 		}
-		
+
 		async function poll() {
 			let response = await fetch('/poll'); 
 			
@@ -20,7 +31,6 @@
 				console.log(response.statustext); 
 			} else {
 				let message = await response.text(); 
-				console.log('Recebi:'); 
 				console.log(message); 
 				await poll(); 
 			}
@@ -29,7 +39,9 @@
 	<body>
 		<h1>D1 Wemos Mini Dashboard</h1>
 		<h2>Led State = OFF</h2>
-		<button onclick="toggleLed('on')">Ligar</button>
+		<button 	onclick="toggleLed('on')">Ligar</button>
 		<button onclick="toggleLed('off')">Desligar</button>
+		<div class="events">
+		</div>
 	</body>
 </html>

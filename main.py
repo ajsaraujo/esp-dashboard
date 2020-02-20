@@ -9,6 +9,10 @@ mySocket.listen(5)
 print('O servidor está aguardando requisições...')
 
 while True:
+	if button.value(): 
+		print('O botão foi pressionado!') 
+		led.value(not led.value()) 
+		
 	connection, address = s.accept() 
 	print('Obtivemos uma conexão vinda de %s' % str(address)) 
 	
@@ -20,7 +24,6 @@ while True:
 	poll = request.find('poll') 
 	
 	content_type = 'Content-Type: application/json' 
-	
 	response = '' 
 	
 	if led_on != -1:
@@ -31,7 +34,7 @@ while True:
 		led.value(0)
 	else if poll != -1:
 		print('Informações sobre o button requisitadas pelo Client-side...')
-		response = '{"led_value": ' + led.value() + '}' 
+		response = '{"led_state": ' + led.value() + '}'
 	else:
 		content_type = 'Content-Type: text/html'
 		response = home_page() 
