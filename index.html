@@ -1,15 +1,42 @@
 <!DOCTYPE html> 
 <html>
 	<head>
-		<title>D1 Wemos Mini Dashboard</title>
+		<meta charset="UTF-8">
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet"> 
+		<title>ESP8266 Dashboard</title>
 		<style>
 			html {
-				padding-top: 2%;
+				font-family: 'Roboto Condensed', sans-serif; 
 				text-align: center; 
+			}
+
+			h1 {
+				color: indigo;
 			}
 			
 			button {
 				border-radius: 25%;
+				margin-right: 10px;
+				background-color: indigo; 
+				color: whitesmoke;
+				border-color: indigo;   
+				width: 70px; 
+			}
+
+			.main-card {
+				border: 1px solid grey; 
+				border-radius: 25px;
+				padding-top: 2%;
+				padding-bottom: 25px;  
+			}
+
+			p {
+				margin-right: 5px;
+			}
+			.events {
+				display: flex;
+				text-align: left;
+				max-width: device-width; 
 			}
 		</style>
 	</head>
@@ -17,7 +44,9 @@
 		async function toggleLed(value) {
 			let url = `led=${value}`; 
 			let response = await fetch(url);
-			console.log(await response.message); 
+			console.log(await response.message);
+			document.getElementById('led-state').innerHTML = `Led State = ${value.toUpperCase()}`; 
+			addEventToHtml('DASHBOARD', document.getElementById('led-state').innerHTML); 
 		}
 
 		async function poll() {
@@ -30,18 +59,48 @@
 				console.log('Alguma coisa deu errado... -_-'); 
 				console.log(response.statustext); 
 			} else {
-				let message = await response.text(); 
-				console.log(message); 
+				let message = await response.json(); 
+				
+				console.log('Estado Atual: ' + document.getElementById('led-state').innerHTML); 
+				console.log('Estado recebido: ' + message['led_state']); 
+
+				if (message['led_state'] == 0) {
+					if (document.getElementById('led-state').innerHTML == 'Led State = OFF') {
+						addEventToHtml('BOTÃO', 'Led State = ON'); 
+					}
+					document.getElementById('led-state').innerHTML = 'Led State = ON'; 
+				} else {
+					if (document.getElementById('led-state').innerHTML == 'Led State = ON') {
+						addEventToHtml('BOTÃO', 'Led State = OFF'); 
+					}
+					document.getElementById('led-state').innerHTML = 'Led State = OFF'; 
+				}
 				await poll(); 
 			}
 		}
+
+		poll(); 
+
+		async function addEventToHtml(source, behaviour) {
+			let p = document.createElement('p'); 
+			p.innerHTML = `[${source}] ${behaviour}`; 
+			document.getElementById('events-div').appendChild(p); 
+		}
+
+		function clearEventDiv() {
+			document.getElementById('events-div').innerHTML = ''; 
+		}
+
 	</script>
 	<body>
-		<h1>D1 Wemos Mini Dashboard</h1>
-		<h2>Led State = OFF</h2>
-		<button 	onclick="toggleLed('on')">Ligar</button>
-		<button onclick="toggleLed('off')">Desligar</button>
-		<div class="events">
+		<div class="main-card">
+			<h1>ESP8266 Dashboard</h1>
+			<h2 id="led-state">Led State = OFF</h2>
+			<button 	onclick="toggleLed('on')">Ligar</button>
+			<button onclick="toggleLed('off')">Desligar</button>
+			<button onclick="clearEventDiv()">Limpar</button>
+		</div>
+		<div class="events" id="events-div">
 		</div>
 	</body>
 </html>

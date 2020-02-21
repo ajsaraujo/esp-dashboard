@@ -1,32 +1,29 @@
 try:
-  import usocket as socket
+    import usocket as socket
 except:
-  import socket
+    import socket
 
 from machine import Pin
 import network
 import esp
 
-esp.osdebug(None)
-
+esp.osdebug(None) 
 
 import gc as garbageCollector
 garbageCollector.collect()
 
-print('Insira suas credenciais de rede Wi-Fi:') 
-ssid = input('SSID (nome da rede): ') 
-password = intpu('Senha: ') 
+print('Insira suas credenciais de rede Wi-Fi')
+ssid = input('SSID (Nome da rede): ')
+password = input('Senha: ')
 
 station = network.WLAN(network.STA_IF)
 station.active(True)
-station.connect(ssid, password)
 
-print('Tentando conectar à rede...') 
-while station.isconnected() == False:
+while not station.isconnected():
   pass
 
-print('Conexão estabelecida!')
+print('Conexão estabelecida com sucesso!')
 print(station.ifconfig())
 
 led = Pin(2, Pin.OUT)
-button = Pin(4, Pin.IN) 
+button = Pin(4, Pin.IN)
