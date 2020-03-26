@@ -1,6 +1,6 @@
 # esp-dashboard
 
-Demonstração de comunicação entre um WebApp e um microcontrolador ESP8266 com MicroPython com atuadores e sensores. 
+Demonstração de comunicação entre um WebApp e um microcontrolador ESP8266 com MicroPython utilizando atuadores e sensores. 
 
 ## Instalação e Uso
 
