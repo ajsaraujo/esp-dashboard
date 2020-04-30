@@ -1,7 +1,3 @@
-# esp-dashboard
-
-Demo of communication between a WebApp, sensors, actuators, and an ESP8266 microcontroller running Micropython.
-
 ## Installation and usage
 1. [Install](https://docs.micropython.org/en/latest/esp8266/tutorial/intro.html) the firmware.
 2. Run the program ```boot.py``` on the board. I recommend using [Thonny IDE](https://thonny.org/).
